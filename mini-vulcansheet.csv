@@ -1,0 +1,7 @@
+"SampleID","Tissue","Factor","Condition","Replicate","bamReads","Peaks","PeakCaller","Run"
+"Vehicle_1","MCF7","ER","Vehicle",1,"SRR7629152.sorted.bam","SRR7629152_peaks.xls","macs","SRR7629152"
+"Vehicle_2","MCF7","ER","Vehicle",2,"SRR7629153.sorted.bam","SRR7629153_peaks.xls","macs","SRR7629153"
+"Vehicle_3","MCF7","ER","Vehicle",3,"SRR7629154.sorted.bam","SRR7629154_peaks.xls","macs","SRR7629154"
+"E2_1","MCF7","ER","E2",1,"SRR7629155.sorted.bam","SRR7629155_peaks.xls","macs","SRR7629155"
+"E2_2","MCF7","ER","E2",2,"SRR7629156.sorted.bam","SRR7629156_peaks.xls","macs","SRR7629156"
+"E2_3","MCF7","ER","E2",3,"SRR7629157.sorted.bam","SRR7629157_peaks.xls","macs","SRR7629157"

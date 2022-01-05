@@ -1,0 +1,36 @@
+#!/usr/bin/sbatch
+#SBATCH --account=biol-hic-2020
+#SBATCH --output=log/bamCoverage_%A_%a.log
+#SBATCH --time=3:0:0
+#SBATCH --ntasks=1
+# #SBATCH --mem=32G
+# #SBATCH --cpus-per-task=16
+#SBATCH --array=0-17
+
+accessions=(
+            SRR7629152
+            SRR7629153
+            SRR7629154
+            SRR7629155
+            SRR7629156
+            SRR7629157
+            SRR7629158
+            SRR7629159
+            SRR7629160
+            SRR7629161
+            SRR7629162
+            SRR7629163
+            SRR7629164
+            SRR7629165
+            SRR7629166
+            SRR7629167
+            SRR7629168
+            SRR7629169
+            )
+
+accession=${accessions[$SLURM_ARRAY_TASK_ID]}
+
+bamCoverage -b ${accession}.sorted.bam -o ${accession}.bw -p max
+
+echo "Job complete at `date`"
+

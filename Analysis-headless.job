@@ -1,0 +1,8 @@
+#!/bin/sh
+#SBATCH --account=biol-hic-2020
+#SBATCH --time=10:00:00
+#SBATCH --mem=64G
+#SBATCH --output=../log/Analysis-headless-%j.out
+#SBATCH --cpus-per-task=20
+
+R --save --no-restore < Analysis-headless.R

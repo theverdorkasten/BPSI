@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#SBATCH --account=biol-hic-2020
+#SBATCH --time=30:0
+#SBATCH -n1
+#SBATCH --mem=16G
+#SBATCH --cpus-per-task=16
+
+# wget ftp://ftp.ensembl.org/pub/release-84/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+# gunzip Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+module load bio/HISAT2/2.2.1-foss-2020a
+hisat2-build -p 16 genome.fa genome
+module unload bio/HISAT2/2.2.1-foss-2020a

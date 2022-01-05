@@ -1,0 +1,8 @@
+#!/bin/sh
+#SBATCH --account=biol-hic-2020
+#SBATCH --time=10:00:00
+#SBATCH --mem=64G
+#SBATCH --output=log/vulcan_pairs-%j.out
+#SBATCH --cpus-per-task=20
+
+R --vanilla < vulcan_pairs.R

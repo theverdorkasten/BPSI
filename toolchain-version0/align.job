@@ -1,0 +1,47 @@
+#!/bin/sh
+
+#SBATCH --account=biol-hic-2020
+#SBATCH --time=2:0:0
+#SBATCH -n1
+#SBATCH --mem=256G
+#SBATCH --cpus-per-task=16
+
+accession=$1
+
+module load bio/SRA-Toolkit/2.10.7-centos_linux64 bio/HISAT2/2.2.1-foss-2020a 
+
+hisat2 -x genome --sra-acc ${accession} -S ${accession}.sam -p 16 --no-spliced-alignment
+
+module unload bio/HISAT2/2.2.1-foss-2020a bio/SRA-Toolkit/2.10.7-centos_linux64
+module load bio/SAMtools/1.10-foss-2020a
+
+samtools view -bS ${accession}.sam > ${accession}.bam
+samtools sort ${accession}.bam -o ${accession}.sorted.bam
+samtools index ${accession}.sorted.bam
+
+module unload bio/SAMtools/1.10-foss-2020a
+# module load bio/R-bundle-Bioconductor/3.11-foss-2020a-R-4.0.0
+
+# call ATACseqQC
+
+# module unload bio/R-bundle-Bioconductor/3.11-foss-2020a-R-4.0.0
+module load bio/MACS2/2.2.7.1-foss-2019b-Python-3.7.4
+
+macs2 callpeak -t ${accession}.sorted.bam -n $accession \
+         -B --call-summits --keep-dup auto
+
+module unload bio/MACS2/2.2.7.1-foss-2019b-Python-3.7.4
+module load bio/BEDTools/2.29.2-GCC-9.3.0
+
+awk '{OFS="\t";} {print $1,$2-100,$3+100,$4,$5}' ${accession}_summits.bed \
+        > ${accession}_summit_window.bed
+
+cat ${accession}_summit_window.bed | sort -k1,1 -k2,2n | \
+        awk '$2 >= 0' | \
+        mergeBed -i stdin | \
+        intersectBed -wa -v -a stdin -b hg38-blacklist.v2.bed > ${accession}_CAF_merged_peaks.bed
+
+module unload bio/BEDTools/2.29.2-GCC-9.3.0
+module load bio/R-bundle-Bioconductor/3.11-foss-2020a-R-4.0.0
+
+# call DiffBind and Vulcan
